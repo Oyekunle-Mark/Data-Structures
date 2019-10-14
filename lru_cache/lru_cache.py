@@ -15,9 +15,10 @@ class LRUCache:
         self.limit = limit
         # track the current number of node it is holding
         self.node_count = 0
-        # create a linked list to hold the key value pair
+        # create a linked list to hold the key and basically create the order of the lru cache
         self.cache_list = DoublyLinkedList()
-        # create a storage dict for fast acccess to node in the cache
+        # create a storage dict for fast acccess to node an d value in the cache
+        # this will map the key to the value it holds and the node it is represented by in the linked list
         self.cache_storage = {}
 
     """
@@ -32,11 +33,15 @@ class LRUCache:
         # if the key does not exist in the cache_storage return None
         if key not in self.cache_storage:
             return None
+
         # otherwise return the value associated with the key and move the node to the head of the cache_list
         else:
+            # get the node associated with that key
             node = self.cache_storage[key]["node"]
+            # move it to the front of the list as the most recently used value
             self.cache_list.move_to_front(node)
 
+            # return the value associated with the key
             return self.cache_storage[key]["value"]
 
     """
@@ -53,14 +58,18 @@ class LRUCache:
     def set(self, key, value):
         # if the key exist in the cache_storage, replace its value and move the node to the head in the cache_list
         if key in self.cache_storage:
+            # update the value that key is mapped to
             self.cache_storage[key]["value"] = value
+            # fetch the node it is mapped to
             key_node = self.cache_storage[key]["node"]
+            # move the node to the front of the list
             self.cache_list.move_to_front(key_node)
         # otherwise, check if the length of the node is up to the limit
         else:
             if self.node_count == self.limit:
                 # if it is, delete the tail of the cache_list and remove the key value pair from the cache_storage
                 popped_key = self.cache_list.remove_from_tail()
+                # remove the key from the cache storage
                 self.cache_storage.pop(popped_key)
                 # add the new key value pair to the cache_storage and cache_list head
                 node = self.cache_list.add_to_head(key)
