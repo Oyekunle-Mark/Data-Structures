@@ -75,6 +75,9 @@ class DoublyLinkedList:
             # set the head ref to the new node
             self.head = new_node
 
+        # return the node so the lru cache can reference it later
+        return new_node
+
     """Removes the List's current head node, making the
     current head's next node the new head of the List.
     Returns the value of the removed Node."""
