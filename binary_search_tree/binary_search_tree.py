@@ -6,123 +6,71 @@ class BinarySearchTree:
         self.left = None
         # add ref to the right child node
         self.right = None
-        # hold the tree nodes here for faster access later
-        self.nodes = {}
 
-    # Insert the given value into the tree
     def insert(self, value):
-        # LEFT CASE
-        # check if the new nodes value is less than our current ones value
+        # if the value is less than the self.vale
         if value < self.value:
-            # if there is no left child,
+            # if there is no left node insert a new node here
             if self.left is None:
-                # place a new node here
-                node = BinarySearchTree(value)
-                self.left = node
-                # store the value and node
-                self.nodes[node.value] = node
-                return
-            # otherwise if the right is empty and the value is greater than the node value
-            elif self.left.right is None and value > self.left.value:
-                node = BinarySearchTree(value)
-                self.left.right = node
-                # store the value and node
-                self.nodes[node.value] = node
-                return
-
-            if value < self.left.value:
-                self.left = self.left.left
-                self.insert(value)
+                self.left = BinarySearchTree(value)
+            # otherwise call the insert method on the left node binary search tree instance
             else:
-                self.left.right = self.left.right.right
-                self.insert(value)
-
+                self.left.insert(value)
+        # otherwise
         else:
+             # if there is no right node insert a new node here
             if self.right is None:
-                # place a new node here
-                node = BinarySearchTree(value)
-                self.right = node
-                # store the value and node
-                self.nodes[node.value] = node
-                return
-            # otherwise if the left is empty and the value is less than the node value
-            elif self.right.left is None and value < self.right.value:
-                node = BinarySearchTree(value)
-                self.right.left = node
-                # store the value and node
-                self.nodes[node.value] = node
-                return
-
-            if value > self.right.value:
-                self.right = self.right.right
-                self.insert(value)
+                self.right = BinarySearchTree(value)
+            # otherwise call the insert method on the right node binary search tree instance
             else:
-                if self.right.left:
-                    self.right.left = self.right.left.left
-                    self.insert(value)
+                self.right.insert(value)
 
     def contains(self, target):
-        # if the target can be found in any of the root, left or right node
-        if target == self.value or target == self.left.value or target == self.right.value:
+        # if self.value is the target return True
+        if target == self.value:
             return True
 
-        # BASE CASE
-        elif self.left is None and self.right is None:
-            return False
-
-        # LEFT CASE
+        # if target is less than self.target
         if target < self.value:
-            # if the is no left child,
+            # if there is no node to the left, then the target is not in the tree
             if self.left is None:
                 return False
-            # otherwise
-            elif self.left.right is None:
-                return False
-
-            if value < self.left.value:
-                self.left = self.left.left
-                self.contains(value)
-
+            # otherwise recursively call the contains method on the binary search tree instance of the left node
+            else:
+                return self.left.contains(target)
+        # otherwise
         else:
-            # if the is no right child,
+            # if there is no node to the right, then the target is not in the tree
             if self.right is None:
                 return False
-            # otherwise
-            elif self.right.left is None:
-                return False
-
-            if value > self.right.value:
-                self.right = self.right.right
-                self.contains(value)
+            # otherwise recursively call the contains method on the binary search tree instance of the right node
+            else:
+                return self.right.contains(target)
 
     def get_max(self):
-        # if there is no right node
+        # if there is no node to the right, return the current value of the node
         if self.right is None:
             return self.value
 
-        # if the the is no right right value
-        if self.right.right is None:
-            return self.right.value
+        # otherwise call the get_max method on the right node
+        return self.right.get_max()
 
-       # call the recursive function
-        self.right = self.right.right
-        self.get_max()
-
-    # Call the function `cb` on the value of each node
-    # You may use a recursive or iterative approach
     def for_each(self, cb):
-        # call the cb on the root
+        # call cb on the root
         cb(self.value)
 
-        # call it on the nodes too
-        [cb(key) for key in self.nodes.keys()]
-            
+        # if there is a left node call the for_each method on the binary search tree instance of the left node
+        if self.left is not None:
+            self.left.for_each(cb)
 
+        # if there is a right node call the for_each method on the binary search tree instance of the right node
+        if self.right is not None:
+            self.right.for_each(cb)
 
-    # DAY 2 Project -----------------------
+        # DAY 2 Project -----------------------
 
-    # Print all the values in order from low to high
-    # Hint:  Use a recursive, depth first traversal
+        # Print all the values in order from low to high
+        # Hint:  Use a recursive, depth first traversal
 
     def in_order_print(self, node):
         pass
