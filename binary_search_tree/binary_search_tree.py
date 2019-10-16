@@ -1,4 +1,7 @@
 class BinarySearchTree:
+    """Implementation of the Binary Search Tree data structure
+    """
+
     def __init__(self, value):
         # set the value at the current node
         self.value = value
@@ -8,6 +11,11 @@ class BinarySearchTree:
         self.right = None
 
     def insert(self, value):
+        """Inserts the value at the correct position
+
+        Arguments:
+            value {int} -- the value to be inserted into the tree
+        """
         # if the value is less than the self.vale
         if value < self.value:
             # if there is no left node insert a new node here
@@ -26,6 +34,14 @@ class BinarySearchTree:
                 self.right.insert(value)
 
     def contains(self, target):
+        """Checks if a value is in a tree
+
+        Arguments:
+            target {int} -- value to be checked
+
+        Returns:
+            bool -- True if value is found and False otherwise
+        """
         # if self.value is the target return True
         if target == self.value:
             return True
@@ -48,6 +64,11 @@ class BinarySearchTree:
                 return self.right.contains(target)
 
     def get_max(self):
+        """Returns the maximum number in the tree
+
+        Returns:
+            int -- the max number
+        """
         # if there is no node to the right, return the current value of the node
         if self.right is None:
             return self.value
@@ -56,6 +77,11 @@ class BinarySearchTree:
         return self.right.get_max()
 
     def for_each(self, cb):
+        """Calls the cb on every node in the tree
+
+        Arguments:
+            cb {func} -- the callback
+        """
         # call cb on the root
         cb(self.value)
 
