@@ -1,6 +1,3 @@
-from tree_node import TreeNode
-
-
 class BinarySearchTree:
     def __init__(self, value):
         # set the value at the current node
@@ -9,6 +6,7 @@ class BinarySearchTree:
         self.left = None
         # add ref to the right child node
         self.right = None
+        self.nodes = {}
 
     # Insert the given value into the tree
     def insert(self, value):
@@ -18,19 +16,23 @@ class BinarySearchTree:
             # if the is no left child,
             if not self.left:
                 # place a new node here
-                self.left = BinarySearchTree(value)
+                node = BinarySearchTree(value)
+                self.left = node
+                self.nodes[node.value] = node
                 return
             # otherwise
             elif not self.left.right and self.left.value < value:
-                self.left.right = BinarySearchTree(value)
+                node = BinarySearchTree(value)
+                self.left.right = node
+                self.nodes[node.value] = node
                 return
 
             if value < self.left.value:
                 self.left = self.left.left
                 self.insert(value)
-            # else:
-            #     self.left.right = self.left.right
-            #     self.insert(value)
+            else:
+                self.left.right = self.left.right
+                self.insert(value)
 
                 # repeat process for left
         # RIGHT CASE
@@ -42,19 +44,23 @@ class BinarySearchTree:
         else:
             if not self.right:
                 # place a new node here
-                self.right = BinarySearchTree(value)
+                node = BinarySearchTree(value)
+                self.right = node
+                self.nodes[node.value] = node
                 return
             # otherwise
             elif not self.right.left and self.right.value > value:
-                self.right.left = BinarySearchTree(value)
+                node = BinarySearchTree(value)
+                self.right.left = node
+                self.nodes[node.value] = node
                 return
 
             if value > self.right.value:
                 self.right = self.right.right
                 self.insert(value)
-            # else:
-            #     self.right.left = self.right.left
-            #     self.insert(value)
+            else:
+                self.right.left = self.right.left
+                self.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
@@ -144,32 +150,33 @@ class BinarySearchTree:
         #     return True
 
         # BASE CASE
-        if self.left is None and self.right is None:
-            return
+        # if self.left is None and self.right is None:
+        #     return
 
-        if self.left:
-            cb(self.left.value)
+        # if self.left:
+        #     cb(self.left.value)
 
-            # if self.left:
-            if self.left.left:
-                cb(self.left.left.value)
-                self.left = self.left.left
-            if self.left.right:
-                cb(self.left.right.value)
-                self.left.right = self.left.right.right
+        #     # if self.left:
+        #     if self.left.left:
+        #         cb(self.left.left.value)
+        #         self.left = self.left.left
+        #     if self.left.right:
+        #         cb(self.left.right.value)
+        #         self.left.right = self.left.right.right
 
 
-        if self.right:
-            cb(self.right.value)
+        # if self.right:
+        #     cb(self.right.value)
 
-            # if self.right:
-            if self.right.right:
-                cb(self.right.right.value)
-                self.right = self.right.right
-            if self.right.left:
-                cb(self.right.left.value)
-                self.right.left = self.right.left.left
-
+        #     # if self.right:
+        #     if self.right.right:
+        #         cb(self.right.right.value)
+        #         self.right = self.right.right
+        #     if self.right.left:
+        #         cb(self.right.left.value)
+        #         self.right.left = self.right.left.left
+        for key in self.nodes.keys():
+            cb(key)
         
 
         # LEFT CASE
