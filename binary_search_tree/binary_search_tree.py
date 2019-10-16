@@ -6,7 +6,7 @@ class BinarySearchTree:
         self.left = None
         # add ref to the right child node
         self.right = None
-        # hold the tree nodes here
+        # hold the tree nodes here for faster access later
         self.nodes = {}
 
     # Insert the given value into the tree
@@ -22,7 +22,7 @@ class BinarySearchTree:
                 # store the value and node
                 self.nodes[node.value] = node
                 return
-            # otherwise
+            # otherwise if the right is empty and the value is greater than the node value
             elif self.left.right is None and value > self.left.value:
                 node = BinarySearchTree(value)
                 self.left.right = node
@@ -45,7 +45,7 @@ class BinarySearchTree:
                 # store the value and node
                 self.nodes[node.value] = node
                 return
-            # otherwise
+            # otherwise if the left is empty and the value is less than the node value
             elif self.right.left is None and value < self.right.value:
                 node = BinarySearchTree(value)
                 self.right.left = node
@@ -57,8 +57,9 @@ class BinarySearchTree:
                 self.right = self.right.right
                 self.insert(value)
             else:
-                self.right.left = self.right.left.left
-                self.insert(value)
+                if self.right.left:
+                    self.right.left = self.right.left.left
+                    self.insert(value)
 
     def contains(self, target):
         # if the target can be found in any of the root, left or right node
@@ -66,7 +67,7 @@ class BinarySearchTree:
             return True
 
         # BASE CASE
-        elif self.left and not self.right:
+        elif self.left is None and self.right is None:
             return False
 
         # LEFT CASE
