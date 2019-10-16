@@ -6,6 +6,7 @@ class BinarySearchTree:
         self.left = None
         # add ref to the right child node
         self.right = None
+        # hold the tree nodes here
         self.nodes = {}
 
     # Insert the given value into the tree
@@ -13,17 +14,19 @@ class BinarySearchTree:
         # LEFT CASE
         # check if the new nodes value is less than our current ones value
         if value < self.value:
-            # if the is no left child,
-            if not self.left:
+            # if there is no left child,
+            if self.left is None:
                 # place a new node here
                 node = BinarySearchTree(value)
                 self.left = node
+                # store the value and node
                 self.nodes[node.value] = node
                 return
             # otherwise
-            elif not self.left.right and self.left.value < value:
+            elif self.left.right is None and value > self.left.value:
                 node = BinarySearchTree(value)
                 self.left.right = node
+                # store the value and node
                 self.nodes[node.value] = node
                 return
 
@@ -31,27 +34,22 @@ class BinarySearchTree:
                 self.left = self.left.left
                 self.insert(value)
             else:
-                self.left.right = self.left.right
+                self.left.right = self.left.right.right
                 self.insert(value)
 
-                # repeat process for left
-        # RIGHT CASE
-        # check if the new nodes value is greater than or equal to the current parent value
-            # if there is no right child here,
-                # place a new one
-            # otherwise
-                # repeat process right
         else:
-            if not self.right:
+            if self.right is None:
                 # place a new node here
                 node = BinarySearchTree(value)
                 self.right = node
+                # store the value and node
                 self.nodes[node.value] = node
                 return
             # otherwise
-            elif not self.right.left and self.right.value > value:
+            elif self.right.left is None and value < self.right.value:
                 node = BinarySearchTree(value)
                 self.right.left = node
+                # store the value and node
                 self.nodes[node.value] = node
                 return
 
@@ -59,13 +57,11 @@ class BinarySearchTree:
                 self.right = self.right.right
                 self.insert(value)
             else:
-                self.right.left = self.right.left
+                self.right.left = self.right.left.left
                 self.insert(value)
 
-    # Return True if the tree contains the value
-    # False if it does not
-
     def contains(self, target):
+        # if the target can be found in any of the root, left or right node
         if target == self.value or target == self.left.value or target == self.right.value:
             return True
 
@@ -76,141 +72,51 @@ class BinarySearchTree:
         # LEFT CASE
         if target < self.value:
             # if the is no left child,
-            if not self.left:
+            if self.left is None:
                 return False
             # otherwise
-            elif not self.left.right:
+            elif self.left.right is None:
                 return False
 
             if value < self.left.value:
                 self.left = self.left.left
                 self.contains(value)
-            # else:
-            #     # self.left.right = self.left.right
-            #     # self.contains(value)
-            #     pass
 
         else:
-            # if the is no left child,
-            if not self.right:
+            # if the is no right child,
+            if self.right is None:
                 return False
             # otherwise
-            elif not self.right.left:
+            elif self.right.left is None:
                 return False
 
             if value > self.right.value:
                 self.right = self.right.right
                 self.contains(value)
-            # else:
-            #     # self.right.left = self.right.left
-            #     # self.contains(value)
-            #     pass
-
-    # Return the maximum value found in the tree
 
     def get_max(self):
-        # BASE CASE
-        # if empty tree
+        # if there is no right node
         if self.right is None:
             return self.value
-            # return none
 
-        # RECURSIVE
-        # if the the is no right value
+        # if the the is no right right value
         if self.right.right is None:
             return self.right.value
 
-            # return the root value
-        # return the get max of the the right node
+       # call the recursive function
         self.right = self.right.right
         self.get_max()
-
-        # ITTERATIVE
-        # set a max value variable to keep track of max value
-        # get a ref to current node
-        # check if we are at a valid tree node
-        # if our current value is greater than the max value
-        # update the max value
-        # move on to the next right node in the tree
-        # setting the current node to the current nodes right
-        # return our max value
-        pass
 
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
     def for_each(self, cb):
+        # call the cb on the root
         cb(self.value)
-        # base case
 
-        # left case
+        # call it on the nodes too
+        [cb(key) for key in self.nodes.keys()]
+            
 
-        # right case
-
-        # if target == self.value or target == self.left.value or target == self.right.value:
-        #     return True
-
-        # BASE CASE
-        # if self.left is None and self.right is None:
-        #     return
-
-        # if self.left:
-        #     cb(self.left.value)
-
-        #     # if self.left:
-        #     if self.left.left:
-        #         cb(self.left.left.value)
-        #         self.left = self.left.left
-        #     if self.left.right:
-        #         cb(self.left.right.value)
-        #         self.left.right = self.left.right.right
-
-
-        # if self.right:
-        #     cb(self.right.value)
-
-        #     # if self.right:
-        #     if self.right.right:
-        #         cb(self.right.right.value)
-        #         self.right = self.right.right
-        #     if self.right.left:
-        #         cb(self.right.left.value)
-        #         self.right.left = self.right.left.left
-        for key in self.nodes.keys():
-            cb(key)
-        
-
-        # LEFT CASE
-        # if target < self.value:
-        #     # if the is no left child,
-        #     if not self.left:
-        #         return False
-        #     # otherwise
-        #     elif not self.left.right:
-        #         return False
-
-        #     if value < self.left.value:
-        #         self.left = self.left.left
-        #         self.contains(value)
-        #     # else:
-        #     #     # self.left.right = self.left.right
-        #     #     # self.contains(value)
-        #     #     pass
-
-        # else:
-        #     # if the is no left child,
-        #     if not self.right:
-        #         return False
-        #     # otherwise
-        #     elif not self.right.left:
-        #         return False
-
-        #     if value > self.right.value:
-        #         self.right = self.right.right
-        #         self.contains(value)
-        #     # else:
-        #     #     # self.right.left = self.right.left
-        #     #     # self.contains(value)
-        #     #     pass
 
     # DAY 2 Project -----------------------
 
