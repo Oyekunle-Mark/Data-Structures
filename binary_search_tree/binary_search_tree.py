@@ -14,9 +14,24 @@ class BinarySearchTree:
     def insert(self, value):
         # LEFT CASE
         # check if the new nodes value is less than our current ones value
+        if value < self.value:
             # if the is no left child,
+            if not self.left:
                 # place a new node here
+                self.left = BinarySearchTree(value)
+                return
             # otherwise
+            elif not self.left.right:
+                self.left.right = BinarySearchTree(value)
+                return
+
+            
+            if value < self.left.value:
+                self.left = self.left.left
+                self.insert(value)
+            else:
+                self.left.right = self.left.right
+                self.insert(value)
                 # repeat process for left
         # RIGHT CASE
         # check if the new nodes value is greater than or equal to the current parent value
@@ -24,7 +39,23 @@ class BinarySearchTree:
                 # place a new one
             # otherwise
                 # repeat process right
-        pass
+        else:
+            if not self.right:
+                # place a new node here
+                self.right = BinarySearchTree(value)
+                return
+            # otherwise
+            elif not self.right.left:
+                self.right.left = BinarySearchTree(value)
+                return
+
+            
+            if value < self.right.value:
+                self.right = self.right.right
+                self.insert(value)
+            else:
+                self.right.left = self.right.left
+                self.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
@@ -95,3 +126,14 @@ class BinarySearchTree:
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
         pass
+
+
+# bst = BinarySearchTree(5)
+
+    
+# bst.insert(2)
+# bst.insert(3)
+# # bst.insert(7)
+# # bst.insert(6)
+# print(bst.left.right.value)
+# # print(bst.right.left.value)
