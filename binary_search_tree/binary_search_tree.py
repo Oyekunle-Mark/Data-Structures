@@ -169,7 +169,23 @@ class BinarySearchTree:
 
     # Print In-order recursive DFT
     def pre_order_dft(self, node):
-        pass
+        # print the node
+        print(node.value)
+
+        # if there is a left node add it to the stack
+        if node.right is not None:
+            self.stack.push(node.right)
+
+        # if there is a right node add it to the stack
+        if node.left is not None:
+            self.stack.push(node.left)
+
+        # base case
+        if not self.stack.len():
+            return
+
+        # call the method recursively passing the popped node
+        self.in_order_print(self.stack.pop())
 
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
