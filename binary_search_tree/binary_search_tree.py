@@ -1,5 +1,5 @@
-from binary_search_tree.dll_queue import Queue
-from binary_search_tree.dll_stack import Stack
+from dll_queue import Queue
+from dll_stack import Stack
 
 
 class BinarySearchTree:
@@ -13,6 +13,7 @@ class BinarySearchTree:
         self.left = None
         # add ref to the right child node
         self.right = None
+        self.stack = Stack()
 
     def insert(self, value):
         """Inserts the value at the correct position
@@ -103,18 +104,65 @@ class BinarySearchTree:
     # Hint:  Use a recursive, depth first traversal
 
     def in_order_print(self, node):
+        print(node.value)
 
-        pass
+        if node.right is not None:
+            self.stack.push(node.right)
+
+        if node.left is not None:
+            self.stack.push(node.left)
+
+        if not self.stack.len():
+            return
+        self.in_order_print(self.stack.pop())
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
+
     def bft_print(self, node):
-        pass
+        # create the queue instance
+        queue = Queue()
+        # add the node to queue
+        queue.enqueue(node)
+
+        # while there is a node in the queue
+        while queue.len():
+            # dequeue the queue
+            current_node = queue.dequeue()
+            # print the value of the node
+            print(current_node.value)
+
+            # if there is a left node add it to the queue
+            if current_node.left is not None:
+                queue.enqueue(current_node.left)
+
+            # if there is a right node add it to the queue
+            if current_node.right is not None:
+                queue.enqueue(current_node.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
+
     def dft_print(self, node):
-        pass
+        # create the stack instance
+        stack = Stack()
+        # add the node to stack
+        stack.push(node)
+
+        # while there is a node in the stack
+        while stack.len():
+            # pop the stack
+            current_node = stack.pop()
+            # print the value of the node
+            print(current_node.value)
+
+            # if there is a left node add it to the stack
+            if current_node.left is not None:
+                stack.push(current_node.left)
+
+            # if there is a right node add it to the stack
+            if current_node.right is not None:
+                stack.push(current_node.right)
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
