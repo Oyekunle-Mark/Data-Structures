@@ -1,3 +1,7 @@
+from binary_search_tree.dll_queue import Queue
+from binary_search_tree.dll_stack import Stack
+
+
 class BinarySearchTree:
     """Implementation of the Binary Search Tree data structure
     """
@@ -93,12 +97,13 @@ class BinarySearchTree:
         if self.right is not None:
             self.right.for_each(cb)
 
-        # DAY 2 Project -----------------------
+    # DAY 2 Project -----------------------
 
-        # Print all the values in order from low to high
-        # Hint:  Use a recursive, depth first traversal
+    # Print all the values in order from low to high
+    # Hint:  Use a recursive, depth first traversal
 
     def in_order_print(self, node):
+
         pass
 
     # Print the value of every node, starting with the given node,
